@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# Bash script for updating a mainnet validator
+
+# Update package list
+echo "Updating package list with 'sudo apt-get update'"
+sudo apt-get update
+
+# Upgrade packages
+sudo apt-get -y upgrade
+
+docker stop validator && docker rm validator
+docker pull quay.io/team-helium/validator:latest-validator-amd64
+docker image prune -f
+
+docker run -d --init \
+--restart always \
+--publish 2154:2154/tcp \
+--publish 8080:8080/tcp \
+--name validator \
+--mount type=bind,source=$HOME/validator_data,target=/var/data \
+quay.io/team-helium/validator:latest-validator-amd64

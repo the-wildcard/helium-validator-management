@@ -1,0 +1,1 @@
+alias validator="docker exec validator miner"

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Bash script for launching a new Helium validator on a Linux server
+
+# Update package list
+echo "Updating package list with 'sudo apt-get update'"
+sudo apt-get update
+
+# Upgrade packages
+sudo apt upgrade
+
+# Install docker
+echo "Installing Docker with 'sudo apt-get install docker.io'"
+sudo apt-get install docker.io
+sudo usermod -aG docker $USER
+
+# Create a directory for validator data
+echo "Creating validator directory"
+mkdir $HOME/validator_data
+
+# Install latest validator image
+echo "Installing latest validator image"
+sudo docker run -d --init \
+--restart always \
+--publish 2154:2154/tcp \
+--publish 8080:8080/tcp \
+--name validator \
+--mount type=bind,source=$HOME/validator_data,target=/var/data \
+quay.io/team-helium/validator:latest-validator-amd64
+
+# Get bash alias file
+wget -O ~/.bash_aliases https://raw.githubusercontent.com/the-wildcard/helium-validators/main/bash_aliases
+
+# Get validator update script
+wget https://raw.githubusercontent.com/the-wildcard/helium-validators/main/update_validator
+chmod 755 update_validator
