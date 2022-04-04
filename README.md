@@ -1,6 +1,7 @@
 ﻿# helium-validators
 
-This repository contains scripts used for setup and maintenance of Helium network validators
+This repository contains scripts used for setup and maintenance of Helium network validators. The new validator script will update server packages, update bash aliases,
+then launch a new validator in docker. To learn more about validators, visit: https://docs.helium.com/mine-hnt/validators/
 
 To launch a mainnet validator on a new server: 
 ```
